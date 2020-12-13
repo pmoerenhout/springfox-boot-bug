@@ -11,7 +11,6 @@ import static springfox.documentation.builders.BuilderDefaults.nullToEmpty;
 import java.util.Map;
 
 import org.assertj.core.api.Assertions;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -69,7 +68,6 @@ class ApplicationTest {
   }
 
   // DispatcherServlet is not used but TestDispatcherServlet
-  @Disabled
   @Test
   public void test_swagger() throws Exception {
     mockMvc
@@ -87,6 +85,22 @@ class ApplicationTest {
     // No HTTP headers needed
 
     HttpEntity<Map<String, Object>> entity = new HttpEntity<>(null, headers);
+
+    Assertions.assertThat(restTemplate
+        .postForObject("http://localhost:" + port + "/", entity, String.class))
+        .contains("This is the anyRequest");
+
+    Assertions.assertThat(restTemplate
+        .postForObject("http://localhost:" + port + "/any", entity, String.class))
+        .contains("This is the anyRequest");
+
+    Assertions.assertThat(restTemplate
+        .postForObject("http://localhost:" + port + "/any?parameter=value", entity, String.class))
+        .contains("This is the anyRequest");
+
+    Assertions.assertThat(restTemplate
+        .postForObject("http://localhost:" + port + "/any/", entity, String.class))
+        .contains("This is the anyRequest");
 
     Assertions.assertThat(restTemplate
         .postForObject("http://localhost:" + port + "/any/request/with_any_url", entity, String.class))

@@ -49,7 +49,9 @@ public class AllMatchingController {
   // @RequestMapping(value = "/**") // Swagger-UI doesn't works
   // @PostMapping(value = "/**") // Swagger-UI doesn't works
 
-  @RequestMapping("/**")
+  // @RequestMapping("/{path:^(?!swagger-ui).*}/**") // Swagger-UI works
+
+  @RequestMapping(value = { "/", "/{path:^(?!swagger-ui).*}/**" })
   public void anyRequest(
       final HttpServletRequest request,
       final HttpServletResponse response)

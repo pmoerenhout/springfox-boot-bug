@@ -6,8 +6,6 @@ import org.springframework.boot.WebApplicationType;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
-import org.springframework.context.annotation.Bean;
-import org.springframework.web.servlet.DispatcherServlet;
 
 @SpringBootApplication
 public class Application extends SpringBootServletInitializer {
@@ -30,12 +28,12 @@ public class Application extends SpringBootServletInitializer {
    **
    ** Enable it to handle the SimpleUrl handler earlier.
    */
-  @Bean
-  public DispatcherServlet dispatcherServlet() {
-    final SwaggerDispatcherServlet dispatcherServlet = new SwaggerDispatcherServlet();
-    dispatcherServlet.setSwaggerBaseUrl(swaggerBaseUrl);
-    return dispatcherServlet;
-  }
+//  @Bean
+//  public DispatcherServlet dispatcherServlet() {
+//    final SwaggerDispatcherServlet dispatcherServlet = new SwaggerDispatcherServlet();
+//    dispatcherServlet.setSwaggerBaseUrl(swaggerBaseUrl);
+//    return dispatcherServlet;
+//  }
 
 }
 
