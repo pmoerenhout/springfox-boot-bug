@@ -7,7 +7,6 @@ import java.nio.charset.StandardCharsets;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.Collections;
 import java.util.Enumeration;
 
 import javax.servlet.ServletOutputStream;
@@ -16,11 +15,9 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.http.HttpMethod;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.server.MethodNotAllowedException;
 
 @RestController
 public class AllMatchingController {
@@ -47,22 +44,18 @@ public class AllMatchingController {
   // @RequestMapping("/any/**")
   // @PostMapping("/any/**")
 
-  // The Swagger UI breaks when an Post method URL matching pattern is used which also matches the Swagger UI URL's.
+  // The Swagger UI breaks when an URL matching pattern is used which also matches the Swagger UI URL's.
   // It works only if the /swagger-ui request are handled by the SimpleUrlHandlerMapping, see the SwaggerDispatcherServlet workaround.
-  // @RequestMapping(value = "/**") // Swagger-UI works
+  // @RequestMapping(value = "/**") // Swagger-UI doesn't works
   // @PostMapping(value = "/**") // Swagger-UI doesn't works
 
-  @RequestMapping(value = "/**")
+  @RequestMapping("/**")
   public void anyRequest(
       final HttpServletRequest request,
       final HttpServletResponse response)
       throws IOException {
 
     log.info("Method:{} URI:{}", request.getRequestURI(), request.getMethod());
-    // If @RequestMapping must be used, the check method
-    if (!HttpMethod.POST.equals(HttpMethod.valueOf(request.getMethod()))){
-      throw new MethodNotAllowedException(request.getMethod(), Collections.singletonList(HttpMethod.POST));
-    }
 
     final ServletOutputStream outputStream = response.getOutputStream();
 

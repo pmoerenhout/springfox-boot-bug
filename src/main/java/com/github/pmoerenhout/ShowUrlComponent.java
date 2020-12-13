@@ -24,6 +24,7 @@ public class ShowUrlComponent implements InitializingBean {
     log.info("http://localhost:{}/api/v1/get", serverPort);
     log.info("curl -i -X POST http://localhost:{}/api/v1/post", serverPort);
     log.info("http://localhost:{}/keepalive", serverPort);
+    log.info("http://localhost:{}/this/should/be/handled/by/anyRequest", serverPort);
     log.info("curl -i -X POST http://localhost:{}/this/should/be/handled/by/anyRequest", serverPort);
   }
 }
