@@ -1,0 +1,26 @@
+#common
+target/
+out/
+classes/
+stress/logs/
+syntax:glob
+*.swp
+
+# Eclipse Project Files
+.settings/
+.gwt/
+.project
+.classpath
+.externalToolBuilders
+
+# IntelliJ Project Files
+*.iml
+*.ipr
+*.iws
+.idea/
+
+# MAC_OSX
+*.DS_Store
+
+version.properties
+git.properties
