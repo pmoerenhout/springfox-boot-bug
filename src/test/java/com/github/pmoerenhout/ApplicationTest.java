@@ -11,6 +11,7 @@ import static springfox.documentation.builders.BuilderDefaults.nullToEmpty;
 import java.util.Map;
 
 import org.assertj.core.api.Assertions;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -67,6 +68,8 @@ class ApplicationTest {
         .andExpect(content().string(startsWith("<html>\r\n<title>Keepalive</title>\r\n<body>")));
   }
 
+  // DispatcherServlet is not used but TestDispatcherServlet
+  @Disabled
   @Test
   public void test_swagger() throws Exception {
     mockMvc
