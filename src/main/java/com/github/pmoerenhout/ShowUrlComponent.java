@@ -21,12 +21,9 @@ public class ShowUrlComponent implements InitializingBean {
   public void afterPropertiesSet() throws Exception {
     log.info("http://localhost:{}{}/swagger-ui/index.html", serverPort, swaggerBaseUrl);
     log.info("http://localhost:{}{}/swagger-ui/", serverPort, swaggerBaseUrl);
-    log.info("http://localhost:{}/api/v1/first", serverPort);
-    log.info("curl -i -X POST http://localhost:{}/api/v1/second", serverPort);
+    log.info("http://localhost:{}/api/v1/get", serverPort);
+    log.info("curl -i -X POST http://localhost:{}/api/v1/post", serverPort);
     log.info("http://localhost:{}/keepalive", serverPort);
-    log.info(
-        "curl -i -X POST -H \"Content-Type: application/vnd.globalplatform.card-content-mgt;version=1\" http://localhost:{}/this/should/be/handled/by/anyRequest",
-        serverPort);
-
+    log.info("curl -i -X POST http://localhost:{}/this/should/be/handled/by/anyRequest", serverPort);
   }
 }

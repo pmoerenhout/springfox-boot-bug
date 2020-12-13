@@ -34,7 +34,6 @@ public class SwaggerDispatcherServlet extends DispatcherServlet {
     List<HandlerMapping> handlerMappings = getHandlerMappings();
     log.info("Found " + handlerMappings.size() + " handlerMappings " + handlerMappings);
     if (handlerMappings != null) {
-      logger.debug("$$$$$$$$$$ " + swaggerBaseUrl + "/swagger-ui/");
       if (request.getRequestURI().startsWith(swaggerBaseUrl + "/swagger-ui/")) {
         logger.debug("It's a Swagger URL");
         for (HandlerMapping mapping : handlerMappings) {

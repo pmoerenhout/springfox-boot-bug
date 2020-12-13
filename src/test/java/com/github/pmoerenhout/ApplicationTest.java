@@ -2,7 +2,6 @@ package com.github.pmoerenhout;
 
 import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.startsWith;
-import static org.springframework.http.HttpHeaders.CONTENT_TYPE;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
@@ -82,21 +81,13 @@ class ApplicationTest {
   public void test_post_request_to_any_url() {
 
     final HttpHeaders headers = new HttpHeaders();
-    // headers.setContentType(MediaType.valueOf()"application/vnd.globalplatform.card-content-mgt;version=1.0");
-    // headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
-    headers.set("X-Admin-From", "123/456/789");
-    headers.set(CONTENT_TYPE, "application/vnd.globalplatform.card-content-mgt;version=1.0");
-
-//    // request body parameters
-//    Map<String, Object> map = new HashMap<>();
-//    map.put("Parameter", "1");
+    // No HTTP headers needed
 
     HttpEntity<Map<String, Object>> entity = new HttpEntity<>(null, headers);
 
     Assertions.assertThat(restTemplate
         .postForObject("http://localhost:" + port + "/any/request/with_any_url", entity, String.class))
         .contains("This is the anyRequest");
-
   }
 
   private String fixup(String swaggerBaseUrl) {
