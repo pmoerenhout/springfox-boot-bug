@@ -5,12 +5,14 @@ import static org.hamcrest.Matchers.startsWith;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.forwardedUrl;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static springfox.documentation.builders.BuilderDefaults.nullToEmpty;
 
 import java.util.Map;
 
 import org.assertj.core.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -31,6 +33,8 @@ class ApplicationTest {
 
   private static final Logger log = LoggerFactory.getLogger(ApplicationTest.class);
 
+  private static final String ANY_RESPONSE = "This is the anyRequest";
+
   @LocalServerPort
   private int port;
 
@@ -43,7 +47,7 @@ class ApplicationTest {
   @Value("${springfox.documentation.swagger-ui.base-url:}")
   private String swaggerBaseUrl;
 
-  @Test
+  @BeforeEach
   public void test_application() {
     log.info("Local port is {}", port);
   }
@@ -69,7 +73,7 @@ class ApplicationTest {
 
   // DispatcherServlet is not used but TestDispatcherServlet
   @Test
-  public void test_swagger() throws Exception {
+  public void test_swagger_index() throws Exception {
     mockMvc
         .perform(get(fixup(swaggerBaseUrl) + "/swagger-ui/index.html"))
         .andDo(print())
@@ -79,32 +83,82 @@ class ApplicationTest {
   }
 
   @Test
-  public void test_post_request_to_any_url() {
+  public void test_swagger_forward() throws Exception {
+    mockMvc
+        .perform(get(fixup(swaggerBaseUrl) + "/swagger-ui/"))
+        .andDo(print())
+        .andExpect(status().isOk())
+        .andExpect(forwardedUrl("/swagger-ui/index.html"));
+  }
 
-    final HttpHeaders headers = new HttpHeaders();
-    // No HTTP headers needed
+  @Test
+  public void test_post_request_to_home_url() {
 
-    HttpEntity<Map<String, Object>> entity = new HttpEntity<>(null, headers);
+    HttpEntity<Map<String, Object>> entity = new HttpEntity<>(null, new HttpHeaders());
 
     Assertions.assertThat(restTemplate
         .postForObject("http://localhost:" + port + "/", entity, String.class))
-        .contains("This is the anyRequest");
+        .contains(ANY_RESPONSE);
+  }
+
+  @Test
+  public void test_post_request_to_random_simple_url() {
+
+    HttpEntity<Map<String, Object>> entity = new HttpEntity<>(null, new HttpHeaders());
 
     Assertions.assertThat(restTemplate
         .postForObject("http://localhost:" + port + "/any", entity, String.class))
-        .contains("This is the anyRequest");
+        .contains(ANY_RESPONSE);
+  }
 
-    Assertions.assertThat(restTemplate
-        .postForObject("http://localhost:" + port + "/any?parameter=value", entity, String.class))
-        .contains("This is the anyRequest");
+  @Test
+  public void test_post_request_to_random_simple_with_trailing_slash_url() {
+
+    HttpEntity<Map<String, Object>> entity = new HttpEntity<>(null, new HttpHeaders());
 
     Assertions.assertThat(restTemplate
         .postForObject("http://localhost:" + port + "/any/", entity, String.class))
-        .contains("This is the anyRequest");
+        .contains(ANY_RESPONSE);
+  }
+
+  @Test
+  public void test_post_request_to_random_multiple_paths_url() {
+
+    HttpEntity<Map<String, Object>> entity = new HttpEntity<>(null, new HttpHeaders());
 
     Assertions.assertThat(restTemplate
         .postForObject("http://localhost:" + port + "/any/request/with_any_url", entity, String.class))
-        .contains("This is the anyRequest");
+        .contains(ANY_RESPONSE);
+  }
+
+  @Test
+  public void test_post_request_to_random_multiple_paths_with_trailing_slash_url() {
+
+    HttpEntity<Map<String, Object>> entity = new HttpEntity<>(null, new HttpHeaders());
+
+    Assertions.assertThat(restTemplate
+        .postForObject("http://localhost:" + port + "/any/request/with_any_url/", entity, String.class))
+        .contains(ANY_RESPONSE);
+  }
+
+  @Test
+  public void test_post_request_to_partially_matching_swagger_url() {
+
+    HttpEntity<Map<String, Object>> entity = new HttpEntity<>(null, new HttpHeaders());
+
+    Assertions.assertThat(restTemplate
+        .postForObject("http://localhost:" + port + "/swagg/", entity, String.class))
+        .contains(ANY_RESPONSE);
+  }
+
+  @Test
+  public void test_post_request_to_matching_with_extra_characters_swagger_url() {
+
+    HttpEntity<Map<String, Object>> entity = new HttpEntity<>(null, new HttpHeaders());
+
+    Assertions.assertThat(restTemplate
+        .postForObject("http://localhost:" + port + "/swagger-ui-non-matching/", entity, String.class))
+        .contains(ANY_RESPONSE);
   }
 
   private String fixup(String swaggerBaseUrl) {
