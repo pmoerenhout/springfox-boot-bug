@@ -52,7 +52,7 @@ public class AllMatchingController {
 
   // @RequestMapping(value = { "/", "/{part:^(?!swagger-ui$).*}/**" }) // Swagger-UI works
 
-  @RequestMapping(value = { "/", "/{part:^(?!swagger-ui$).*}/**" })
+  @RequestMapping(value = { "", "{part:^(?!^swagger-ui$).*}/**" })
   public void anyRequest(
       @PathVariable(required = false) final String part,
       final HttpServletRequest request,

@@ -48,7 +48,7 @@ class ApplicationTest {
   private String swaggerBaseUrl;
 
   @BeforeEach
-  public void test_application() {
+  public void setUp() {
     log.info("Local port is {}", port);
   }
 
@@ -158,6 +158,26 @@ class ApplicationTest {
 
     Assertions.assertThat(restTemplate
         .postForObject("http://localhost:" + port + "/swagger-ui-non-matching/", entity, String.class))
+        .contains(ANY_RESPONSE);
+  }
+
+  @Test
+  public void test_post_request_to_url_with_swagger_ui_at_end_of_path() {
+
+    HttpEntity<Map<String, Object>> entity = new HttpEntity<>(null, new HttpHeaders());
+
+    Assertions.assertThat(restTemplate
+        .postForObject("http://localhost:" + port + "/any/swagger-ui/", entity, String.class))
+        .contains(ANY_RESPONSE);
+  }
+
+  @Test
+  public void test_post_request_to_url_with_swagger_ui_in_path() {
+
+    HttpEntity<Map<String, Object>> entity = new HttpEntity<>(null, new HttpHeaders());
+
+    Assertions.assertThat(restTemplate
+        .postForObject("http://localhost:" + port + "/any/swagger-ui/with_any_url", entity, String.class))
         .contains(ANY_RESPONSE);
   }
 
