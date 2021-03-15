@@ -1,7 +1,7 @@
 ### Springfox Boot Starter and /** request mapping
 
 This code demonstrates the Swagger UI request failure when an /** request mapping is used in a Spring controller.
-It can be worked around to use more describing patterns like /prefix/** but doesn'' work when a handle all mapping is required.
+It can be worked around to use more describing patterns like /prefix/** but doesn't work when a handle all mapping is required.
 
 The /** mapping can be replaced with an mapping which excludes the /swagger-ui/ patterns:
 ```

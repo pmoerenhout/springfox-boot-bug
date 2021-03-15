@@ -6,6 +6,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.forwardedUrl;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.redirectedUrl;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static springfox.documentation.builders.BuilderDefaults.nullToEmpty;
 
@@ -89,6 +90,15 @@ class ApplicationTest {
         .andDo(print())
         .andExpect(status().isOk())
         .andExpect(forwardedUrl("/swagger-ui/index.html"));
+  }
+
+  @Test
+  public void test_old_swagger_ui() throws Exception {
+    mockMvc
+        .perform(get(fixup(swaggerBaseUrl) + "/swagger-ui.html"))
+        .andDo(print())
+        .andExpect(status().is3xxRedirection())
+        .andExpect(redirectedUrl(fixup(swaggerBaseUrl) + "/swagger-ui/index.html"));
   }
 
   @Test

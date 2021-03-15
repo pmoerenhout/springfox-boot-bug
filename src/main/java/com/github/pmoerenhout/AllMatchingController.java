@@ -50,9 +50,13 @@ public class AllMatchingController {
   // @RequestMapping(value = "/**") // Swagger-UI doesn't works
   // @PostMapping(value = "/**") // Swagger-UI doesn't works
 
-  // @RequestMapping(value = { "/", "/{part:^(?!swagger-ui$).*}/**" }) // Swagger-UI works
+  // Swagger-UI works
+  // @RequestMapping(value = { "/", "/{part:^(?!swagger-ui$).*}/**" })
 
-  @RequestMapping(value = { "", "{part:^(?!^swagger-ui$).*}/**" })
+  // Swagger-UI works even with old URL redirected
+  // @RequestMapping(value = { "/", "/{part:^(?!swagger-ui$).*}{part:^(?!^swagger-ui.html$).*}/**" })
+
+  @RequestMapping(value = { "/", "/{part:^(?!^swagger-ui$).*}{part:^(?!^swagger-ui.html$).*}/**" })
   public void anyRequest(
       @PathVariable(required = false) final String part,
       final HttpServletRequest request,
